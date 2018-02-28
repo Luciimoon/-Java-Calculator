@@ -7,10 +7,12 @@ class Calculator implements ActionListener {
 
     JFrame frame;
     JTextField textField;
-    JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bdiv, bmul, bsub, badd, bdec, beq, bdel, bclr, bxsqr, bxcub, bxsqrt, bxlog, sinDeg, sinRad, cosDeg, cosRad;
+    JButton b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, bdiv, bmul, bsub,
+            badd, bdec, beq, bdel, bclr, bxsqr, bxcub, bxsqrt, bxlog, sinDeg, sinRad, cosDeg, cosRad, hex, oct, bin, loge;
 
     static double firstNum = 0, secondNum = 0, result = 0;
     static int operator = 0;
+    String convert;
 
     @SuppressWarnings("LeakingThisInConstructor")
     Calculator() {
@@ -39,19 +41,25 @@ class Calculator implements ActionListener {
         bxcub = new JButton("X^3");
         bxsqrt = new JButton("sqrt");
         bxlog = new JButton("log10");
-        
+
         sinDeg = new JButton("sin(deg)");
         sinRad = new JButton("sin(rad)");
         cosDeg = new JButton("cos(deg)");
         cosRad = new JButton("cos(rad)");
 
-        textField.setBounds(30, 40, 350, 30);
+        hex = new JButton("to hex");
+        oct = new JButton("to oct");
+        bin = new JButton("to bin");
+        loge = new JButton("log e");
+
+        textField.setBounds(30, 40, 350 + 180, 30);
         b7.setBounds(40, 100, 50, 40);
         b8.setBounds(110, 100, 50, 40);
         b9.setBounds(180, 100, 50, 40);
         bdiv.setBounds(250, 100, 50, 40);
         bxsqr.setBounds(320, 100, 73, 40);
         sinDeg.setBounds(410, 100, 95, 40);
+        hex.setBounds(520, 100, 95, 40);
 
         b4.setBounds(40, 170, 50, 40);
         b5.setBounds(110, 170, 50, 40);
@@ -59,6 +67,7 @@ class Calculator implements ActionListener {
         bmul.setBounds(250, 170, 50, 40);
         bxcub.setBounds(320, 170, 73, 40);
         sinRad.setBounds(410, 170, 95, 40);
+        oct.setBounds(520, 170, 95, 40);
 
         b1.setBounds(40, 240, 50, 40);
         b2.setBounds(110, 240, 50, 40);
@@ -66,6 +75,7 @@ class Calculator implements ActionListener {
         bsub.setBounds(250, 240, 50, 40);
         bxsqrt.setBounds(320, 240, 73, 40);
         cosDeg.setBounds(410, 240, 95, 40);
+        bin.setBounds(520, 240, 95, 40);
 
         bdec.setBounds(40, 310, 50, 40);
         b0.setBounds(110, 310, 50, 40);
@@ -73,6 +83,7 @@ class Calculator implements ActionListener {
         badd.setBounds(250, 310, 50, 40);
         bxlog.setBounds(320, 310, 73, 40);
         cosRad.setBounds(410, 310, 95, 40);
+        loge.setBounds(520, 310, 95, 40);
 
         bdel.setBounds(60, 380, 100, 40);
         bclr.setBounds(180, 380, 100, 40);
@@ -101,15 +112,20 @@ class Calculator implements ActionListener {
         frame.add(bxcub);
         frame.add(bxsqrt);
         frame.add(bxlog);
-        
+
         frame.add(sinDeg);
         frame.add(sinRad);
         frame.add(cosDeg);
         frame.add(cosRad);
 
+        frame.add(hex);
+        frame.add(oct);
+        frame.add(bin);
+        frame.add(loge);
+
         frame.setLayout(null);
         frame.setVisible(true);
-        frame.setSize(420+210, 500);
+        frame.setSize(420 + 210, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -136,11 +152,16 @@ class Calculator implements ActionListener {
         bxcub.addActionListener(this);
         bxsqrt.addActionListener(this);
         bxlog.addActionListener(this);
-        
+
         sinDeg.addActionListener(this);
         sinRad.addActionListener(this);
         cosDeg.addActionListener(this);
         cosRad.addActionListener(this);
+
+        hex.addActionListener(this);
+        oct.addActionListener(this);
+        bin.addActionListener(this);
+        loge.addActionListener(this);
     }
 
     @Override
@@ -194,12 +215,7 @@ class Calculator implements ActionListener {
             }
             textField.setText("" + result);
         }
-        
-        
-        
-        
-        
-        
+
         //Trig functions
         if (e.getSource() == sinDeg) {
             firstNum = Double.parseDouble(textField.getText());
@@ -208,15 +224,15 @@ class Calculator implements ActionListener {
 
             switch (operator) {
                 case 9:
-                   double angle = 90 ;
-                   result  = Math.sin( Math.toRadians( angle ) ) ;
+                    double pinum = Math.PI / 180;
+                    double rads = firstNum * pinum;
 
-                   // result = rads * pinum;
+                    result = Math.sin(rads);
                     break;
             }
             textField.setText("" + result);
         }
-        
+
         if (e.getSource() == sinRad) {
             firstNum = Double.parseDouble(textField.getText());
             operator = 10;
@@ -229,7 +245,7 @@ class Calculator implements ActionListener {
             }
             textField.setText("" + result);
         }
-        
+
         if (e.getSource() == cosDeg) {
             firstNum = Double.parseDouble(textField.getText());
             operator = 11;
@@ -237,15 +253,15 @@ class Calculator implements ActionListener {
 
             switch (operator) {
                 case 11:
-                    double rads = Math.cos(firstNum);
-                    double pinum = 180/Math.PI;
-                    
-                    result = rads * pinum;
+                    double pinum = Math.PI / 180;
+                    double rads = firstNum * pinum;
+
+                    result = Math.cos(rads);
                     break;
             }
             textField.setText("" + result);
         }
-        
+
         if (e.getSource() == cosRad) {
             firstNum = Double.parseDouble(textField.getText());
             operator = 12;
@@ -258,38 +274,63 @@ class Calculator implements ActionListener {
             }
             textField.setText("" + result);
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        //end of trig
+
+        //convert functions
+        if (e.getSource() == hex) {
+            firstNum = Double.parseDouble(textField.getText());
+            operator = 13;
+            textField.setText("");
+
+            switch (operator) {
+                case 13:
+
+                    convert = Integer.toHexString((int) firstNum);
+                    break;
+            }
+            textField.setText(convert);
+        }
+
+        if (e.getSource() == oct) {
+            firstNum = Double.parseDouble(textField.getText());
+            operator = 14;
+            textField.setText("");
+
+            switch (operator) {
+                case 14:
+
+                    convert = Integer.toOctalString((int) firstNum);
+                    break;
+            }
+            textField.setText(convert);
+        }
+
+        if (e.getSource() == bin) {
+            firstNum = Double.parseDouble(textField.getText());
+            operator = 15;
+            textField.setText("");
+
+            switch (operator) {
+                case 15:
+                    convert = Integer.toBinaryString((int) firstNum);
+                    break;
+            }
+            textField.setText(convert);
+        }
+
+        if (e.getSource() == loge) {
+            firstNum = Double.parseDouble(textField.getText());
+            operator = 16;
+            textField.setText("");
+
+            switch (operator) {
+                case 16:
+                    result = Math.log(firstNum);
+                    break;
+            }
+            textField.setText("" + result);
+        }
+        //end of convert
 
         if (e.getSource() == b1) {
             textField.setText(textField.getText().concat("1"));
@@ -392,8 +433,8 @@ class Calculator implements ActionListener {
 
         if (e.getSource() == bdel) {
             /*  i<s.length() - 1
-             *  Because the index starts at 0, i has to start at zero to get the first char
-             *  s.length() doesnt start at 0, so it is 1 too high for the index, so you need - 1
+         *  Because the index starts at 0, i has to start at zero to get the first char
+         *  s.length() doesnt start at 0, so it is 1 too high for the index, so you need - 1
              */
             String s = textField.getText();
             textField.setText("");
@@ -405,32 +446,7 @@ class Calculator implements ActionListener {
     }
 
     public static void main(String... s) {
-        
-         
-       
 
         new Calculator();
     }
 }
-
-
-   /* Testing math methods
-        double mathTest = Math.pow(10.0, 2.0);
-        System.out.println("10^2 = " + mathTest);
-
-        mathTest = Math.sqrt(25.0);
-        System.out.println("sqrt(25) = " + mathTest);
-
-        mathTest = Math.pow(25.0, .5);
-        System.out.println("math.pow(.5) = " + mathTest);
-
-        mathTest = Math.pow(10.0, 2.5);
-        System.out.println("math.pow(2.5) = " + mathTest);
-
-        mathTest = Math.log10(100.0);
-        System.out.println("log10(5.0) = " + mathTest);
-
-
-        String baseTest = Integer.toHexString(255);
-        System.out.print(baseTest);
-         */
